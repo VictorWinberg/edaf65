@@ -10,7 +10,6 @@ public class RunnerRunnable implements Runnable {
     this.downloader = downloader;
   }
 
-  @Override
   public void run() {
     while(downloader.hasPDF()) {
       String pdf = downloader.getPDF();

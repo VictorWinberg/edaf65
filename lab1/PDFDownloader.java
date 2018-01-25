@@ -5,10 +5,12 @@ import java.net.*;
 import java.util.*;
 import java.util.regex.*;
 import java.util.stream.*;
+import java.util.concurrent.*;
 import java.nio.file.*;
 
 import lab2.RunnerThread;
 import lab2.RunnerRunnable;
+import lab2.RunnerCallable;
 
 public class PDFDownloader {
 
@@ -30,11 +32,19 @@ public class PDFDownloader {
           thread.start();
         }
         break;
-      case "runnable":
+      case "run":
         for (int i = 0; i < 5; i++) {
           RunnerRunnable runnable = new RunnerRunnable(this);
           runnable.run();
         }
+        break;
+      case "exe":
+        ExecutorService pool = Executors.newFixedThreadPool(5);
+        for(String pdf : pdfs){
+          Runnable task = new RunnerCallable(pdf);
+          pool.submit(task);
+        }
+        pool.shutdown();
         break;
       case "default":
         for (String pdf : pdfs) {
