@@ -1,3 +1,5 @@
+package lab1;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -5,30 +7,48 @@ import java.util.regex.*;
 import java.util.stream.*;
 import java.nio.file.*;
 
+import lab2.RunnerThread;
+import lab2.RunnerRunnable;
+
 public class PDFDownloader {
 
+  private LinkedList<String> pdfs;
+
   public static void main(String[] args) throws IOException {
-    new PDFDownloader(args[0]);
+    new PDFDownloader(args[0], args.length > 1 ? args[1] : "default");
   }
 
-  public PDFDownloader(String website) throws IOException {
-    String homepage = downloadPage(website);
-    List<String> startlinks = findHyperLinks(homepage);
-    startlinks.add(0, website);
+  public PDFDownloader(String website, String mode) throws IOException {
+    String page = downloadPage(website);
+    List<String> hrefs = findHyperLinks(page);
+    pdfs = findPDFs(hrefs);
 
-    for (String link : startlinks) {
-      try {
-        String page = downloadPage(link);
-        List<String> links = findHyperLinks(page);
-
-        List<String> pdfs = findPDFs(links);
-        for(String pdf : pdfs){
-          downloadPDF(pdf, link);
+    switch (mode) {
+      case "thread":
+        for (int i = 0; i < 5; i++) {
+          RunnerThread thread = new RunnerThread(this);
+          thread.start();
         }
-      } catch(Exception e) {
-        System.out.println(e.getMessage());
-      }
+        break;
+      case "runnable":
+        for (int i = 0; i < 5; i++) {
+          RunnerRunnable runnable = new RunnerRunnable(this);
+          runnable.run();
+        }
+        break;
+      case "default":
+        for (String pdf : pdfs) {
+          downloadPDF(pdf);
+        }
     }
+  }
+
+  public synchronized boolean hasPDF() {
+    return !pdfs.isEmpty();
+  }
+
+  public synchronized String getPDF() {
+    return pdfs.poll();
   }
 
   public String downloadPage(String url) throws IOException {
@@ -72,13 +92,13 @@ public class PDFDownloader {
     return list;
   }
 
-  public List<String> findPDFs(List<String> links) {
+  public LinkedList<String> findPDFs(List<String> links) {
     return links.stream()
     .filter(x -> x.endsWith(".pdf"))
-    .collect(Collectors.toList());
+    .collect(Collectors.toCollection(LinkedList::new));
   }
 
-  public void downloadPDF(String url, String folder){
+  public static void downloadPDF(String url) {
     String filename = url.substring(url.lastIndexOf("/") + 1);
     new File("downloads").mkdir();
 
@@ -88,10 +108,8 @@ public class PDFDownloader {
       Files.copy(in, path);
       in.close();
 
-      System.out.println("Downloaded " + filename);
-
     } catch (IOException e) {
-      System.out.println(filename + " not found or already existing");
+      // File not found or already existing
     }
   }
 }
