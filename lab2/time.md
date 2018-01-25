@@ -5,4 +5,4 @@ Time
 
 | Default | Threads | Runnable | Executors |
 | ------- | ------- | -------- | --------- |
-| ~ 48 s  | ~ 12 s  | ~ 48 s   | ~ 12 s    |
+| ~ 48 s  | ~ 8 s   | ~ 48 s   | ~ 8 s     |

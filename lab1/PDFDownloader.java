@@ -27,19 +27,19 @@ public class PDFDownloader {
 
     switch (mode) {
       case "thread":
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
           RunnerThread thread = new RunnerThread(this);
           thread.start();
         }
         break;
       case "run":
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
           RunnerRunnable runnable = new RunnerRunnable(this);
           runnable.run();
         }
         break;
       case "exe":
-        ExecutorService pool = Executors.newFixedThreadPool(5);
+        ExecutorService pool = Executors.newFixedThreadPool(10);
         for(String pdf : pdfs){
           Runnable task = new RunnerCallable(pdf);
           pool.submit(task);
