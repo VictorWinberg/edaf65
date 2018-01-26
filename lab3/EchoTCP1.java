@@ -23,10 +23,10 @@ public class EchoTCP1 {
         System.out.println("Client: " + message);
         String response = message.toUpperCase() + '\n';
         out.write(response.getBytes());
-			}
+      }
 
-			socket.close();
-			in.close();
+      socket.close();
+      in.close();
     }
   }
 }
