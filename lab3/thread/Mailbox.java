@@ -16,6 +16,7 @@ public class Mailbox {
       wait();
     }
     this.value = value;
+    notifyAll();
   }
   
   public synchronized String get() throws InterruptedException {

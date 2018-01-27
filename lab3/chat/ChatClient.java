@@ -7,19 +7,66 @@ public class ChatClient {
   public static void main(String argv[]) throws Exception {
     String machine = argv[0];
     int port = Integer.parseInt(argv[1]);
-    BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
+
     Socket socket = new Socket(machine, port);
-    OutputStream out = socket.getOutputStream();
-    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-    while (!socket.isClosed()) {
-      String input = scanner.readLine();
-      out.write((input + '\n').getBytes());
-      String response = in.readLine();
-      System.out.println("Server: " + response);
+    ClientSendThread send = new ClientSendThread(socket);
+    send.start();
+
+    ClientReceiveThread receive = new ClientReceiveThread(socket);
+    receive.start();
+  }
+}
+
+class ClientSendThread extends Thread {
+
+  private Socket socket;
+
+  public ClientSendThread(Socket socket) {
+    this.socket = socket;
+  }
+
+  @Override
+  public void run() {
+    try {
+      BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
+      OutputStream out = socket.getOutputStream();
+
+      while (!socket.isClosed()) {
+        String input = scanner.readLine();
+        out.write((input + '\n').getBytes());
+      }
+
+      socket.close();
+      out.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
+}
 
-    socket.close();
-    in.close();
+class ClientReceiveThread extends Thread {
+
+  private Socket socket;
+
+  public ClientReceiveThread(Socket socket) {
+    this.socket = socket;
+  }
+
+  @Override
+  public void run() {
+    try {
+      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+      while (!socket.isClosed()) {
+        String response = in.readLine();
+        System.out.println("Server: " + response);
+      }
+
+      socket.close();
+      in.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
