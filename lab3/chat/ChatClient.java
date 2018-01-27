@@ -1,4 +1,4 @@
-package lab3;
+package lab3.chat;
 
 import java.io.*;
 import java.net.*;

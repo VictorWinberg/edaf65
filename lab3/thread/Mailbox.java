@@ -1,7 +1,7 @@
-package lab3;
+package lab3.thread;
 
-import lab3.WriteThread;
-import lab3.ReadThread;
+import lab3.thread.WriteThread;
+import lab3.thread.ReadThread;
 
 public class Mailbox {
   

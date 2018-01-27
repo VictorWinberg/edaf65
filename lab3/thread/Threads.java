@@ -1,4 +1,4 @@
-package lab3;
+package lab3.thread;
 
 public class Threads extends Thread {
 

@@ -1,23 +1,22 @@
-package lab3;
+package lab3.thread;
 
-import lab3.Mailbox;
+import lab3.thread.Mailbox;
 
-public class WriteThread extends Thread {
+public class ReadThread extends Thread {
 
-  private String name;
   private Mailbox mailbox;
 
-  public WriteThread(String name, Mailbox mailbox) {
-    this.name = name;
+  public ReadThread(Mailbox mailbox) {
     this.mailbox = mailbox;
   }
   
   @Override
   public void run() {
-    for (int i = 0; i < 5; i++) {
+    while(true) {
       try {
         sleep((long) Math.random());
-        mailbox.set(name + " #" + i);
+        String value = mailbox.get();
+        System.out.println(value);
       } catch (InterruptedException e) {
         System.out.println(e.getMessage());
       }

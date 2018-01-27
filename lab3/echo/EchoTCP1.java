@@ -1,19 +1,15 @@
-package lab3;
+package lab3.echo;
 
 import java.io.*;
 import java.net.*;
 
-public class EchoThread extends Thread {
+public class EchoTCP1 {
+  public static void main(String args[]) throws IOException {
+    int port = Integer.parseInt(args[0]);
+    ServerSocket serverSocket = new ServerSocket(port);
 
-  private Socket socket;
-
-  public EchoThread(Socket socket) {
-    this.socket = socket;
-  }
-
-  @Override
-  public void run() {
-    try {
+    while (true) {
+      Socket socket = serverSocket.accept();
       System.out.println("Connected: " + socket.getInetAddress());
       BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       OutputStream out = socket.getOutputStream();
@@ -27,12 +23,10 @@ public class EchoThread extends Thread {
         System.out.println("Client: " + message);
         String response = message.toUpperCase() + '\n';
         out.write(response.getBytes());
-      }
+			}
 
-      socket.close();
-      in.close();
-    } catch (IOException e) {
-      System.out.println(e.getMessage());
+			socket.close();
+			in.close();
     }
   }
 }
