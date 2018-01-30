@@ -50,6 +50,9 @@ public class PDFDownloader {
         for (String pdf : pdfs) {
           downloadPDF(pdf);
         }
+        break;
+      default:
+        System.out.println("Incorrect mode: " + mode);
     }
   }
 
