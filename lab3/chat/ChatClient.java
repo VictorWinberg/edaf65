@@ -4,9 +4,9 @@ import java.io.*;
 import java.net.*;
 
 public class ChatClient {
-  public static void main(String argv[]) throws Exception {
-    String machine = argv[0];
-    int port = Integer.parseInt(argv[1]);
+  public static void main(String args[]) throws Exception {
+    String machine = args[0];
+    int port = Integer.parseInt(args[1]);
 
     Socket socket = new Socket(machine, port);
 
@@ -34,7 +34,11 @@ class ClientSendThread extends Thread {
 
       while (!socket.isClosed()) {
         String input = scanner.readLine();
-        out.write((input + '\n').getBytes());
+        if (socket.isClosed()) {
+          System.out.println("Disconnected");
+        } else {
+          out.write((input + '\n').getBytes());
+        }
       }
 
       socket.close();
@@ -60,6 +64,10 @@ class ClientReceiveThread extends Thread {
 
       while (!socket.isClosed()) {
         String response = in.readLine();
+        if (response == null) {
+          socket.close();
+          break;
+        }
         System.out.println("Server: " + response);
       }
 
