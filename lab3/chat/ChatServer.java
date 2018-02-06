@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 
 import lab3.thread.Mailbox;
-import lab3.chat.Broadcaster;
 
 public class ChatServer {
 

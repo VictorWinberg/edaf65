@@ -1,7 +1,5 @@
 package lab3.thread;
 
-import lab3.thread.Mailbox;
-
 public class ReadThread extends Thread {
 
   private Mailbox mailbox;

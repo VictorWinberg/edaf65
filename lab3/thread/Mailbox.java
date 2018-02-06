@@ -1,8 +1,5 @@
 package lab3.thread;
 
-import lab3.thread.WriteThread;
-import lab3.thread.ReadThread;
-
 public class Mailbox {
   
   private String value;
