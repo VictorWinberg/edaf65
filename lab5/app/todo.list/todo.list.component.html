@@ -1,0 +1,12 @@
+<div class="container well">
+  <h1>Things to do</h1>
+  <table class="table table-striped">
+    <tr *ngFor="let item of myList">
+      <td>{{item.text}}</td>
+      <td>
+        <span *ngIf="!item.done" class="glyphicon glyphicon-unchecked"></span>
+        <span *ngIf="item.done" class="glyphicon glyphicon-check"></span>
+      </td>
+    </tr>
+  </table>
+</div>
