@@ -7,7 +7,15 @@
     })
   ];
 
-  function TodoComponent() {
+  TodoComponent.parameters = [ app.DataService ];
+
+  function TodoComponent(dataService) {
     this.todo = {};
+
+    this.newTodo = function() {
+      // Shallow clone this.todo
+      var todo = Object.assign({}, this.todo);
+      dataService.addTodo(todo);
+    }
   }
 })(window.app = window.app || {});
