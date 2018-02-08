@@ -7,9 +7,14 @@
     })
   ];
 
-  TodoListComponent.parameters = [ app.DataService ];
+  TodoListComponent.parameters = [ ng.router.Router, app.DataService ];
 
-  function TodoListComponent(dataService) {
+  function TodoListComponent(router, dataService) {
+    this.router = router;
+    this.dataService = dataService;
     this.myList = dataService.getTODOs();
+    this.viewTodo = function(id){
+      router.navigate(['/todo', id]);
+    }
   }
 })(window.app = window.app || {});
