@@ -16,4 +16,8 @@
     this.myList.push(todo);
   };
 
+  DataService.prototype.editTodo = function(todo) {
+    this.myList[todo.id] = todo;
+  };
+
 })(window.app = window.app || {});

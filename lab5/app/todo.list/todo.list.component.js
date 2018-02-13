@@ -7,9 +7,14 @@
     })
   ];
 
-  function TodoListComponent() {
-    this.myList = [{text: "make a list", done: false},
-                   {text: "print the list", done: false},
-                   {text: "add more functionality...", done: false}];
+  TodoListComponent.parameters = [ ng.router.Router, app.DataService ];
+
+  function TodoListComponent(router, dataService) {
+    this.router = router;
+    this.dataService = dataService;
+    this.myList = dataService.getTODOs();
+    this.viewTodo = function(id){
+      router.navigate(['/todo', id]);
+    }
   }
 })(window.app = window.app || {});
